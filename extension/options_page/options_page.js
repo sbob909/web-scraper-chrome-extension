@@ -44,8 +44,12 @@ $(function () {
 		$("#storageType").val(config.storageType);
 		$("#sitemapDb").val(config.sitemapDb);
 		$("#dataDb").val(config.dataDb);
+		$("#dataDbOverwrite").val(config.dataDbOverwrite);
 
 		$("select[name=storageType]").change();
+		if (config.dataDbOverwrite == "overwrite") {
+			$("#dataDbOverwrite").attr('checked', true);
+		}
 	});
 
 	// Sync storage settings
@@ -54,6 +58,11 @@ $(function () {
 		var sitemapDb = $("#sitemapDb").val();
 		var dataDb = $("#dataDb").val();
 		var storageType = $("#storageType").val();
+		if ($("#dataDbOverwrite").is(':checked')) {
+			var dataDbOverwrite = "overwrite";
+		} else {
+			var dataDbOverwrite = "preserve";
+		}
 
 		var newConfig;
 
@@ -61,14 +70,16 @@ $(function () {
 			newConfig = {
 				storageType: storageType,
 				sitemapDb: ' ',
-				dataDb: ' '
+				dataDb: ' ',
+				dataDbOverwrite: ' '
 			}
 		}
 		else {
 			newConfig = {
 				storageType: storageType,
 				sitemapDb: sitemapDb,
-				dataDb: dataDb
+				dataDb: dataDb,
+				dataDbOverwrite: dataDbOverwrite
 			}
 		}
 

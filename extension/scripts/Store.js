@@ -49,11 +49,17 @@ Store.prototype = {
 		var dbLocation = this.getSitemapDataDbLocation(sitemapId);
 		var store = this;
 
-		PouchDB.destroy(dbLocation, function() {
-			var db = store.getSitemapDataDb(sitemapId);
+		if (config.dataDbOverwrite == "overwrite") {
+            PouchDB.destroy(dbLocation, function() {
+    			var db = store.getSitemapDataDb(sitemapId);
+                var dbWriter = new StoreScrapeResultWriter(db);
+    			callback(dbWriter);
+    		});
+        } else {
+            var db = store.getSitemapDataDb(sitemapId);
             var dbWriter = new StoreScrapeResultWriter(db);
-			callback(dbWriter);
-		});
+            callback(dbWriter);
+        }
 	},
 
     createSitemap: function (sitemap, callback) {
